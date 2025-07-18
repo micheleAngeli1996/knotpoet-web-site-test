@@ -39,7 +39,7 @@ export class BandMembersService {
         
         <p>Before joining Knot Poet, Mitch spent years studying Tibetan throat singing and experimental vocal techniques, which he seamlessly integrates into the band's dreaming metal sound. His live performances are known for their transcendent quality, often leaving audiences in altered states of consciousness.</p>
       `,
-      image: "/placeholder.svg?height=400&width=400",
+      image: "/img/members/mitch.png",
       imageAlt: "Mitch, the ethereal vocalist of Knot Poet, surrounded by cosmic energy",
       birthPlace: "Portland, Oregon",
       yearsActive: "2018 - Present",
@@ -63,7 +63,7 @@ export class BandMembersService {
         
         <p>A student of both classical composition and experimental music, Dweller brings a deep understanding of harmonic theory to the band's songwriting process. His solos are not mere displays of technical prowess, but carefully constructed journeys through emotional and spiritual landscapes that complement the band's cosmic themes.</p>
       `,
-      image: "/placeholder.svg?height=400&width=400",
+      image: "/img/members/francio.png",
       imageAlt: "Dweller playing guitar in a cosmic studio setting with ethereal lighting effects",
       birthPlace: "Reykjavik, Iceland",
       yearsActive: "2019 - Present",
@@ -87,7 +87,7 @@ export class BandMembersService {
         
         <p>Ingmar's playing is characterized by its clarity and precision, even in the most chaotic passages. He has developed a unique palm-muting technique that creates percussive textures reminiscent of distant cosmic phenomena, adding another layer to the band's multi-dimensional sound palette.</p>
       `,
-      image: "/placeholder.svg?height=400&width=400",
+      image: "/img/members/ingo.png",
       imageAlt: "Ingmar with his guitar in a cosmic-themed practice space",
       birthPlace: "Stockholm, Sweden",
       yearsActive: "2019 - Present",
@@ -111,7 +111,7 @@ export class BandMembersService {
         
         <p>Echoes' approach to the instrument is deeply philosophical, viewing the bass as a conduit for cosmic energy. His playing often incorporates elements of drone music and sound healing, creating sustained tones that induce meditative states in both band members and audiences.</p>
       `,
-      image: "/placeholder.svg?height=400&width=400",
+      image: "/img/members/echoes.png",
       imageAlt: "Echoes playing bass with cosmic energy waves emanating from the instrument",
       birthPlace: "Berlin, Germany",
       yearsActive: "2020 - Present",
@@ -135,7 +135,7 @@ export class BandMembersService {
         
         <p>Beyond his technical abilities, Fede approaches drumming as a form of meditation and energy work. His understanding of rhythm as a fundamental force in the universe allows him to create beats that resonate on both physical and metaphysical levels, providing the temporal framework for the band's cosmic explorations.</p>
       `,
-      image: "/placeholder.svg?height=400&width=400",
+      image: "/img/members/fede.png",
       imageAlt: "Fede behind his cosmic drum kit with ethereal lighting and space-themed elements",
       birthPlace: "Milan, Italy",
       yearsActive: "2018 - Present",

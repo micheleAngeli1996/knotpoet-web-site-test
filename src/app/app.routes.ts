@@ -7,7 +7,7 @@ export const routes: Routes = [
     { path: 'band/:id', loadComponent: () => import('./pages/band-member-detail/band-member-detail').then(c => c.BandMemberDetailComponent) },
     { path: 'contact', loadComponent: () => import('./pages/contact/contact').then(c => c.Contact) },
     { path: 'news', loadComponent: () => import('./pages/news/news').then(c => c.News) },
-    { path: 'news/:id', loadComponent: () => import('./pages/news-detail/news-detail.component').then(c => c.NewsDetailComponent) },
+    { path: 'news/:slug', loadComponent: () => import('./pages/news-detail/news-detail.component').then(c => c.NewsDetailComponent) },
     { path: 'privacy', loadComponent: () => import('./pages/privacy-policy/privacy-policy').then(c => c.PrivacyPolicy) },
     { path: '**', loadComponent: () => import('./pages/page-not-found/page-not-found').then(c => c.PageNotFound) }
 ];

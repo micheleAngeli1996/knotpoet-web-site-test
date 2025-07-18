@@ -67,7 +67,7 @@ import { Router } from '@angular/router';
                   <img
                     [src]="member.image"
                     [alt]="member.imageAlt"
-                    class="w-full h-48 object-cover rounded-lg mb-4"
+                    class="w-full h-48 object-cover {{member.id === 'fede' ? 'object-center': 'object-top'}} rounded-lg mb-4"
                   />
                 </div>
                 <div class="flex items-center mb-3">

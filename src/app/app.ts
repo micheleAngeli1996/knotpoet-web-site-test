@@ -7,8 +7,7 @@ import { Footer } from "./components/footer/footer";
   selector: 'app-root',
   imports: [RouterOutlet, Navigation, Footer],
   template: `
-  <!-- TODO: cosmic-background -->
-  <div class="">
+  <div class="cosmic-background">
       <app-navigation />
       <router-outlet></router-outlet>
       <app-footer />

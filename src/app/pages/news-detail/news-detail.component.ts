@@ -34,6 +34,8 @@ import { DatePipe } from "@angular/common"
               <h1 class="text-3xl md:text-5xl font-thin text-white/90 mb-4 md:mb-0 leading-tight">
                 {{ article.title }}
               </h1>
+            </div>
+            <div class="flex justify-end w-full">
               <time class="text-white/60 text-sm">{{ article.date | date:'longDate' }}</time>
             </div>
 
@@ -55,7 +57,7 @@ import { DatePipe } from "@angular/common"
     </div>
   }
   @else {
-    <div class="container mx-auto px-4 py-20 text-center">
+    <div class="container mx-auto px-4 py-20 text-center h-screen flex flex-col items-center justify-center">
       <h1 class="text-4xl font-thin text-white/90 mb-4">Article Not Found</h1>
       <p class="text-white/70 mb-8">The article you're looking for doesn't exist.</p>
       <a

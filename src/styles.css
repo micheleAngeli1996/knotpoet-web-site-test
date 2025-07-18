@@ -60,10 +60,7 @@ html {
     background-size: 100% 100%;
 }
 
-.cosmic-background::before {
-    content: "";
-    position: absolute;
-    inset: 0;
+/* .cosmic-background::before {
     background-image: radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.3), transparent),
         radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.2), transparent),
         radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.4), transparent),
@@ -72,7 +69,7 @@ html {
     background-repeat: repeat;
     background-size: 200px 100px;
     animation: twinkle 4s ease-in-out infinite alternate;
-}
+} */
 
 @keyframes twinkle {
     0% {

@@ -24,7 +24,7 @@ import { BandMember, BandMembersService } from "../../services/band-members.serv
         <div class="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden">
           <!-- Hero Image -->
           <div class="relative h-64 md:h-96">
-            <img [src]="member.image" [alt]="member.imageAlt" class="w-full h-full object-cover" />
+            <img [src]="member.image" [alt]="member.imageAlt" class="w-full h-full object-cover {{member.id === 'fede' ? 'object-center': 'object-top'}}" />
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
             <div class="absolute bottom-8 left-8 right-8">
               <div class="flex items-center mb-4">
