@@ -1,0 +1,20 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /subscribers/{docId} {
+       allow create: if request.resource.data.email is string
+                    && request.resource.data.timestamp == request.time;
+      // Blocca ogni altro tipo di accesso
+      allow read, update, delete: if false;
+    }
+    match /members/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /news/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

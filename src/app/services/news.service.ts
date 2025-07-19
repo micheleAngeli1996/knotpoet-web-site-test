@@ -31,7 +31,7 @@ export class NewsService {
         
         <p>The album will be available on all major streaming platforms starting March 15th, 2025. Pre-orders begin February 1st, with special limited edition vinyl variants available exclusively through our website.</p>
       `,
-      image: "/placeholder.svg?height=400&width=800",
+      image: "img/news/cosmic_reverie.png",
       imageAlt: "Cosmic Reverie album artwork featuring swirling galaxies and nebulae",
       keywords: ["cosmic reverie", "new album", "dreaming metal", "space music", "ambient metal"],
     },
@@ -49,7 +49,7 @@ export class NewsService {
         
         <p>Tickets are available now at stellarfestival.com. We'll be performing on the main stage Saturday night at 10 PM, under the desert stars.</p>
       `,
-      image: "/placeholder.svg?height=400&width=800",
+      image: "img/news/festival.png",
       imageAlt: "Stellar Festival stage setup with cosmic LED dome and desert landscape",
       keywords: ["stellar festival", "live performance", "cosmic stage", "nevada", "festival"],
     },
@@ -67,7 +67,7 @@ export class NewsService {
         
         <p>The sessions have yielded material that will appear on "Cosmic Reverie" and have opened new creative pathways for future projects. We'll be sharing more behind-the-scenes content and studio footage in the coming weeks.</p>
       `,
-      image: "/placeholder.svg?height=400&width=800",
+      image: "img/news/studio.png",
       imageAlt: "Recording studio with mountain views and cosmic-themed equipment setup",
       keywords: ["studio sessions", "behind the scenes", "nebula studios", "recording process", "sound design"],
     },

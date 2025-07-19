@@ -1,0 +1,64 @@
+{
+  "firestore": {
+    "database": "(default)",
+    "location": "eur3",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "public": "dist/knot-poet-website/browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/sendMailToSubscribersForNews",
+        "function": {
+          "functionId": "sendMailToSubscribersForNews",
+          "region": "europe-west1"
+        }
+      },
+      {
+        "source": "/api/sendMailNewSubscriber",
+        "function": {
+          "functionId": "sendMailNewSubscriber",
+          "region": "europe-west1"
+        }
+      },
+      {
+        "source": "/api/unsubscribe",
+        "function": {
+          "functionId": "unsubscribe",
+          "region": "europe-west1"
+        }
+      },
+      {
+        "source": "/api/timestamp",
+        "function": {
+          "functionId": "timestamp",
+          "region": "europe-west1"
+        }
+      }
+    ]
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": []
+    }
+  ]
+}

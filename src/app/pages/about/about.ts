@@ -45,11 +45,10 @@ import { Router } from '@angular/router';
             </div>
             <div class="relative">
               <img
-                src="/img/members/band.png"
+                src="img/members/band.png"
                 alt="Band members"
-                class="w-full h-80 object-cover rounded-lg"
+                class="w-full h-80 object-cover object-top rounded-lg mb-4"
               />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-lg"></div>
             </div>
           </div>
         </section>
@@ -63,15 +62,16 @@ import { Router } from '@angular/router';
                 class="max-w-[350px] bg-white/5 backdrop-blur-sm rounded-lg p-6 hover:bg-white/10 transition-colors cursor-pointer"
                 (click)="navigateToMember(member.id)"
               >
-                <div class="mb-4">
+                <div class="mb-4 mask-[url(/img/wallpapers/nebulosa-mask2.png)] mask-size-[109%110%]">
                   <img
                     [src]="member.image"
                     [alt]="member.imageAlt"
-                    class="w-full h-48 object-cover {{member.id === 'fede' ? 'object-center': 'object-top'}} rounded-lg mb-4"
+                    class="w-full h-48 object-cover 
+                    {{member.id === 'fede' ? 'object-center': 'object-top'}} rounded-lg mb-4"
                   />
                 </div>
                 <div class="flex items-center mb-3">
-                  <span class="text-2xl mr-3">{{ member.roleIcon }}</span>
+                  <span class="text-2xl mr-3"><img src="{{member.roleIcon}}" width="24"></span>
                   <div>
                     <h3 class="text-xl font-light text-white/90">{{ member.name }}</h3>
                     <p class="text-purple-400 text-sm">{{ member.role }}</p>
@@ -192,7 +192,7 @@ export class About {
   private seoService = inject(SeoService);
   private bandMembersService = inject(BandMembersService)
   private router = inject(Router);
-  
+
   bandMembers: BandMember[] = [];
 
   ngOnInit(): void {

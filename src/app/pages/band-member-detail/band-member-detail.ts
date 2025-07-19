@@ -28,7 +28,7 @@ import { BandMember, BandMembersService } from "../../services/band-members.serv
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
             <div class="absolute bottom-8 left-8 right-8">
               <div class="flex items-center mb-4">
-                <span class="text-4xl mr-4">{{ member.roleIcon }}</span>
+                <span class="text-2xl mr-3"><img src="{{member.roleIcon}}" width="48"></span>
                 <div>
                   <h1 class="text-4xl md:text-6xl font-thin text-white/90 mb-2">{{ member.name }}</h1>
                   <p class="text-purple-400 text-xl">{{ member.role }}</p>

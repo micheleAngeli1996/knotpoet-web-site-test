@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "knotpoet-d351b"
+  },
+  "targets": {
+    "knotpoet-d351b": {
+      "hosting": {
+        "knotpoet": [
+          "knotpoet-d351b"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

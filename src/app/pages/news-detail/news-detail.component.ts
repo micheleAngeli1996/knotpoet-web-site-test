@@ -24,7 +24,7 @@ import { DatePipe } from "@angular/common"
         <article class="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden">
           @if(article.image) {
             <div class="relative h-64 md:h-96">
-              <img [src]="article!.image" [alt]="article.imageAlt" class="w-full h-full object-cover" />
+              <img [src]="article!.image" [alt]="article.imageAlt" class="w-full h-full object-cover object-center" />
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
             </div>
           }
