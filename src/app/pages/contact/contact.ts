@@ -1,36 +1,41 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SeoService } from '../../services/seo.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-contact',
-  imports: [RouterModule],
+  imports: [RouterModule, ReactiveFormsModule],
   template: `
     <div class="container mx-auto px-4 py-20">
       <div class="max-w-2xl mx-auto">
         <h1>Contact</h1>
 
         <div class="bg-white/5 backdrop-blur-sm rounded-lg p-8">
-          <form class="space-y-6">
+          <form class="space-y-6" [formGroup]="contactForm">
             <div class="grid md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="name" class="block text-white/70 text-sm mb-2">
-                  Name
+                  Name*
                 </label>
                 <div class="w-full max-w-sm min-w-[200px]">
-                  <input id="name" placeholder="Your name" 
-                  class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" />
+                  <input id="name" placeholder="Your name" formControlName="name" required
+                  class="w-full  text-white bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease 
+                  user-invalid:border-red-500 focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" />
                 </div>
               </div>
               <div>
                 <label htmlFor="email" class="block text-white/70 text-sm mb-2">
-                  Email
+                  Email*
                 </label>
                 <input
+                  formControlName="email"
                   id="email"
                   type="email"
-                  class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" 
+                  class="w-full text-white bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease 
+                  invalid:border-red-500 focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" 
                   placeholder="your@email.com"
                 />
               </div>
@@ -41,25 +46,27 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
                 Subject
               </label>
               <input
+              formControlName="subject"
                 id="subject"
                 type="text"
-                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+                class="w-full text-white bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                 placeholder="Message subject"
               />
             </div>
 
             <div>
               <label htmlFor="message" class="block text-white/70 text-sm mb-2">
-                Message
+                Message*
               </label>
               <textarea
+                formControlName="message"
                 id="message"
                 rows={6}
-                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+                class="w-full text-white bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                 placeholder="Your message..."
               ></textarea>
             </div>
-            <button class="w-full" type="button">
+            <button class="w-full cursor-pointer" type="button" (click)="onSubmit()">
               Send Message
           </button>
           </form>
@@ -79,6 +86,8 @@ export class Contact implements OnInit {
 
   private fb: FormBuilder = inject(FormBuilder);
   private seoService = inject(SeoService);
+  private http = inject(HttpClient);
+  private messageService = inject(MessageService);
 
   constructor(
   ) {
@@ -91,6 +100,8 @@ export class Contact implements OnInit {
   }
 
   ngOnInit(): void {
+    this.messageService.show({ type: 'info', text: 'Your message has been sent' });
+    
     this.seoService.updateSeoData({
       title: "Contact Knot Poet - Get in Touch",
       description:
@@ -123,11 +134,29 @@ export class Contact implements OnInit {
     })
   }
 
-  onSubmit(): void {
+  onSubmit() {
     if (this.contactForm.valid) {
-      console.log("Form submitted:", this.contactForm.value)
-      alert("Message sent successfully!")
-      this.contactForm.reset()
+      const emailToReplay = this.contactForm!.get('emailToReplay')!.value;
+      const name = this.contactForm!.get('name')!.value;
+      const message = this.contactForm!.get('message')!.value;
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      this.http.post('https://formspree.io/f/xqabydzl',
+        { name, replyto: emailToReplay, message }, { 'headers': headers }).subscribe(
+          {
+            next: response => {
+              console.log(response);
+              this.contactForm.reset();
+            },
+            error: error => {
+              this.messageService.show({ type: 'error', text: 'An error occurred while sending the message' });
+            },
+            complete: () => {
+              this.messageService.show({ type: 'success', text: 'Your message has been sent' });
+            }
+          }
+        );
+    } else {
+      this.messageService.show({ type: 'error', text: 'Please fill all the fields' });
     }
   }
 }

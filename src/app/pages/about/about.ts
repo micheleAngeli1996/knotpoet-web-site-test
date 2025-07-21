@@ -109,7 +109,7 @@ import { Router } from '@angular/router';
             </div>
             <div class="lg:order-1 relative">
               <img
-                src="/placeholder.svg?height=400&width=600"
+                src="/img/about/studio_about.png"
                 alt="Recording equipment and synthesizers in a cosmic-themed studio"
                 class="w-full h-80 object-cover rounded-lg"
               />
