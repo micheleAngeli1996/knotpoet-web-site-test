@@ -1,6 +1,6 @@
 import {IPerson} from './Person';
 
-export interface IMember extends IPerson {
+export interface Member extends IPerson {
   nickname: string,
   instrument: string,
   description: string,

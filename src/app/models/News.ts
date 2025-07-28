@@ -1,5 +1,5 @@
 export interface NewsItem {
-  slug: string
+  id: string
   date: string
   title: string
   excerpt: string

@@ -1,13 +1,18 @@
-import { Component, inject } from '@angular/core';
-import { BandMember, BandMembersService } from '../../services/band-members.service';
-import { SeoService } from '../../services/seo.service';
-import { Router } from '@angular/router';
+import {Component, inject, OnInit} from '@angular/core';
+import {BandMember, BandMembersService} from '../../services/band-members.service';
+import {SeoService} from '../../services/seo.service';
+import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {AsyncPipe, NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-about',
-  imports: [],
+  imports: [
+    NgOptimizedImage,
+    AsyncPipe
+  ],
   template: `
-   <div class="container mx-auto px-4 py-20">
+    <div class="container mx-auto px-4 py-20">
       <div class="max-w-6xl mx-auto">
         <h1>About</h1>
 
@@ -53,11 +58,11 @@ import { Router } from '@angular/router';
           </div>
         </section>
 
-       <!-- Band Members Section -->
+        <!-- Band Members Section -->
         <section class="mb-20">
           <h2 class="text-3xl font-light text-white/90 mb-12 text-center">The Cosmic Collective</h2>
           <div class="flex flex-wrap justify-center gap-8">
-            @for(member of bandMembers; track member.id) {
+            @for (member of bandMembers$ | async; track member.id) {
               <div
                 class="max-w-[350px] bg-white/5 backdrop-blur-sm rounded-lg p-6 hover:bg-white/10 transition-colors cursor-pointer"
                 (click)="navigateToMember(member.id)"
@@ -66,7 +71,7 @@ import { Router } from '@angular/router';
                   <img
                     [src]="member.image"
                     [alt]="member.imageAlt"
-                    class="w-full h-48 object-cover 
+                    class="w-full h-48 object-cover
                     {{member.id === 'fede' ? 'object-center': 'object-top'}} rounded-lg mb-4"
                   />
                 </div>
@@ -109,10 +114,10 @@ import { Router } from '@angular/router';
             </div>
             <div class="lg:order-1 relative">
               <img
-                src="/img/about/studio_about.png"
+                ngSrc="/img/about/studio_about.png"
                 alt="Recording equipment and synthesizers in a cosmic-themed studio"
                 class="w-full h-80 object-cover rounded-lg"
-              />
+                height="1024" width="1024"/>
               <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-lg"></div>
             </div>
           </div>
@@ -186,17 +191,17 @@ import { Router } from '@angular/router';
       </div>
     </div>
   `,
-  styleUrl: './about.css'
+  styles: ''
 })
-export class About {
+export class About implements OnInit {
   private seoService = inject(SeoService);
-  private bandMembersService = inject(BandMembersService)
+  private bandMembersService = inject(BandMembersService);
   private router = inject(Router);
 
-  bandMembers: BandMember[] = [];
+  bandMembers$ = new Observable<BandMember[]>();
 
   ngOnInit(): void {
-    this.bandMembers = this.bandMembersService.getAllMembers()
+    this.bandMembers$ = this.bandMembersService.getAllMembers()
 
     this.seoService.updateSeoData({
       title: "About Knot Poet - The Story Behind Dreaming Metal",
@@ -209,30 +214,31 @@ export class About {
       type: "website",
       author: "Knot Poet",
     })
-
-    // Add structured data for the about page
-    this.seoService.addStructuredData({
-      "@context": "https://schema.org",
-      "@type": "AboutPage",
-      name: "About Knot Poet",
-      description:
-        "Learn about Knot Poet's journey from cosmic consciousness to dreaming metal and meet the band members.",
-      mainEntity: {
-        "@type": "MusicGroup",
-        name: "Knot Poet",
-        genre: "Dreaming Metal",
+    this.bandMembers$.subscribe(members => {
+      // Add structured data for the about page
+      this.seoService.addStructuredData({
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        name: "About Knot Poet",
         description:
-          "Cosmic metal band exploring the boundaries between heavy music and ethereal soundscapes through dreaming metal.",
-        foundingDate: "2018",
-        url: "https://knotpoet.com",
-        member: this.bandMembers.map((member) => ({
-          "@type": "Person",
-          name: member.name,
-          jobTitle: member.role,
-          description: member.shortDescription,
-        })),
-      },
-    })
+          "Learn about Knot Poet's journey from cosmic consciousness to dreaming metal and meet the band members.",
+        mainEntity: {
+          "@type": "MusicGroup",
+          name: "Knot Poet",
+          genre: "Dreaming Metal",
+          description:
+            "Cosmic metal band exploring the boundaries between heavy music and ethereal soundscapes through dreaming metal.",
+          foundingDate: "2018",
+          url: "https://knotpoet.com",
+          member: members.map((member) => ({
+            "@type": "Person",
+            name: member.name,
+            jobTitle: member.role,
+            description: member.shortDescription,
+          })),
+        },
+      });
+    });
   }
 
   navigateToMember(memberId: string): void {

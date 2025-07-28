@@ -1,6 +1,6 @@
 import {AsyncPipe, DatePipe} from '@angular/common';
 import {Component, inject, OnInit} from '@angular/core';
-import {Router, RouterModule} from '@angular/router';
+import {RouterModule} from '@angular/router';
 import {SeoService} from '../../services/seo.service';
 import {NewsService} from '../../services/news.service';
 import {NewsItem} from '../../models/News';
@@ -15,9 +15,9 @@ import {Observable} from 'rxjs';
         <h1>News</h1>
 
         <div class="space-y-8">
-          @for (item of newsItems$ | async; track item.slug) {
+          @for (item of newsItems$ | async; track item.id) {
             <a
-              [routerLink]="['/news', item.slug]"
+              [routerLink]="['/news', item.id]"
               class="block bg-white/5 backdrop-blur-sm rounded-lg p-8 hover:bg-white/10 transition-colors cursor-pointer article-container"
             >
               <article>
@@ -52,7 +52,6 @@ import {Observable} from 'rxjs';
   `
 })
 export class News implements OnInit {
-  private router = inject(Router);
   private newsService = inject(NewsService);
   private seoService = inject(SeoService);
 
@@ -73,7 +72,6 @@ export class News implements OnInit {
     })
 
     this.newsItems$.subscribe(news => {
-      console.log(news);
       // Add structured data for news articles
       const newsListStructuredData = {
         "@context": "https://schema.org",
@@ -92,15 +90,11 @@ export class News implements OnInit {
               "@type": "MusicGroup",
               name: "Knot Poet",
             },
-            url: `https://knotpoet.com/news/${item.slug}`,
+            url: `https://knotpoet.com/news/${item.id}`,
           },
         })),
       }
       this.seoService.addStructuredData(newsListStructuredData)
     });
-  }
-
-  goToDetail(newsItem: any) {
-    this.router.navigate(['/news', newsItem.date]);
   }
 }

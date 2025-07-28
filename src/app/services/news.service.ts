@@ -13,7 +13,7 @@ export class NewsService {
         return this.firestoreService.getCollection<NewsItem>('news');
     }
 
-    getNewsBySlug(slug: string) {
-        return this.getNews().pipe(mergeMap(news => news), find(n => n.slug === slug));
+    getNewsById(id: string) {
+        return this.getNews().pipe(mergeMap(news => news), find(n => n.id === id));
     }
 }

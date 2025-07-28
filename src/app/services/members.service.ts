@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {IMember} from '../models/Members';
+import {Member} from '../models/Members';
 import {FirestoreService} from './firestore.service';
 import {find, map, mergeMap} from 'rxjs';
 
@@ -10,7 +10,7 @@ export class MembersService {
   private firestoreService = inject(FirestoreService);
 
   getMembers() {
-    return this.firestoreService.getCollection<IMember>('members').pipe(map(members => members.sort((a, b) => a.order - b.order)));
+    return this.firestoreService.getCollection<Member>('members').pipe(map(members => members.sort((a, b) => a.order - b.order)));
   }
 
   getMember(memberId: string) {

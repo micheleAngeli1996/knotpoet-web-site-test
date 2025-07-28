@@ -80,9 +80,9 @@ export class NewsDetailComponent implements OnInit, OnDestroy {
   private seoService = inject(SeoService);
 
   ngOnInit(): void {
-    const slug = this.route.snapshot.paramMap.get("slug")
-    if (slug) {
-      this.article$ = this.newsService.getNewsBySlug(slug)
+    const id = this.route.snapshot.paramMap.get("id");
+    if (id) {
+      this.article$ = this.newsService.getNewsById(id);
 
       this.article$.subscribe(article => {
 
@@ -92,7 +92,7 @@ export class NewsDetailComponent implements OnInit, OnDestroy {
             description: article.excerpt,
             keywords: article.keywords?.join(", ") || "knot poet, news, dreaming metal",
             image: article.image || "/placeholder.svg?height=630&width=1200",
-            url: `https://knotpoet.com/news/${article.slug}`,
+            url: `https://knotpoet.com/news/${article.id}`,
             type: "article",
             author: "Knot Poet",
             publishedTime: article.date,
@@ -123,7 +123,7 @@ export class NewsDetailComponent implements OnInit, OnDestroy {
             },
             mainEntityOfPage: {
               "@type": "WebPage",
-              "@id": `https://knotpoet.com/news/${article.slug}`,
+              "@id": `https://knotpoet.com/news/${article.id}`,
             },
           })
         } else {

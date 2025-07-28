@@ -12,10 +12,9 @@ import {
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 
-import {initializeApp} from "firebase/app";
-import {provideFirebaseApp} from '@angular/fire/app';
-import {getFunctions, provideFunctions} from '@angular/fire/functions';
-import {getFirestore, provideFirestore} from '@angular/fire/firestore';
+import {provideFirebaseApp, initializeApp} from '@angular/fire/app';
+import {provideFirestore, getFirestore} from '@angular/fire/firestore';
+import {provideFunctions, getFunctions} from '@angular/fire/functions';
 
 import {routes} from './app.routes';
 import {environment} from '../environments/environment.prod';
