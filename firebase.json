@@ -18,6 +18,13 @@
         "destination": "/index.html"
       },
       {
+        "source": "/api/sendMail",
+        "function": {
+          "functionId": "sendMail",
+          "region": "europe-west1"
+        }
+      },
+      {
         "source": "/sendMailToSubscribersForNews",
         "function": {
           "functionId": "sendMailToSubscribersForNews",

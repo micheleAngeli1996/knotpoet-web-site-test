@@ -1,8 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {IMember} from '../models/Members';
 import {FirestoreService} from './firestore.service';
-import {News} from '../models/News';
-import {filter, find, map, mergeMap} from 'rxjs';
+import {find, map, mergeMap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

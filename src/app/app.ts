@@ -13,7 +13,7 @@ import { Message } from "./components/message/message";
       <router-outlet></router-outlet>
       <app-footer />
   </div>
-  <div class="fixed right-0 bottom-0 p-4">
+  <div class="fixed right-0 bottom-0 p-4 z-11">
     <app-message />
   </div>
   `,

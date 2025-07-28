@@ -1,32 +1,34 @@
-import { DatePipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { NewsItem, NewsService } from '../../services/news.service';
-import { SeoService } from '../../services/seo.service';
+import {AsyncPipe, DatePipe} from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
+import {Router, RouterModule} from '@angular/router';
+import {SeoService} from '../../services/seo.service';
+import {NewsService} from '../../services/news.service';
+import {NewsItem} from '../../models/News';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-news',
-  imports: [DatePipe, RouterModule],
+  imports: [DatePipe, RouterModule, AsyncPipe],
   template: `
     <div class="container mx-auto px-4 py-20">
       <div class="max-w-4xl mx-auto">
         <h1>News</h1>
 
         <div class="space-y-8">
-          @for(item of newsItems; track item.slug) {
-             <a
+          @for (item of newsItems$ | async; track item.slug) {
+            <a
               [routerLink]="['/news', item.slug]"
-              class="block bg-white/5 backdrop-blur-sm rounded-lg p-8 hover:bg-white/10 transition-colors cursor-pointer"
+              class="block bg-white/5 backdrop-blur-sm rounded-lg p-8 hover:bg-white/10 transition-colors cursor-pointer article-container"
             >
               <article>
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                   <h2 class="text-2xl font-light text-white/90 mb-2 md:mb-0">{{ item.title }}</h2>
-                  <time class="text-white/60 text-sm">{{ item.date | date:'longDate'}}</time>
+                  <time class="text-white/60 text-sm">{{ item.date | date:'longDate' }}</time>
                 </div>
 
                 <p class="text-white/70 text-lg mb-4 leading-relaxed">{{ item.excerpt }}</p>
 
-                <div class="text-purple-400 hover:text-purple-300 transition-colors text-sm font-light">Read more →</div>
+                <div class="text-purple-400 transition-colors text-sm font-light read-more">Read more →</div>
               </article>
             </a>
           }
@@ -43,17 +45,21 @@ import { SeoService } from '../../services/seo.service';
       </div>
     </div>
   `,
-  styleUrl: './news.css'
+  styles: `
+    .article-container:hover .read-more {
+      color: var(--color-purple-300) !important;
+    }
+  `
 })
 export class News implements OnInit {
   private router = inject(Router);
   private newsService = inject(NewsService);
   private seoService = inject(SeoService);
 
-  newsItems: NewsItem[] = []
+  newsItems$: Observable<NewsItem[]> = new Observable();
 
   ngOnInit(): void {
-    this.newsItems = this.newsService.getAllNews()
+    this.newsItems$ = this.newsService.getNews();
 
     this.seoService.updateSeoData({
       title: "News - Knot Poet | Latest Updates and Announcements",
@@ -66,30 +72,32 @@ export class News implements OnInit {
       author: "Knot Poet",
     })
 
-    // Add structured data for news articles
-    const newsListStructuredData = {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      name: "Knot Poet News",
-      description: "Latest news and updates from Knot Poet",
-      itemListElement: this.newsItems.map((item, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        item: {
-          "@type": "Article",
-          headline: item.title,
-          description: item.excerpt,
-          datePublished: item.date,
-          author: {
-            "@type": "MusicGroup",
-            name: "Knot Poet",
+    this.newsItems$.subscribe(news => {
+      console.log(news);
+      // Add structured data for news articles
+      const newsListStructuredData = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Knot Poet News",
+        description: "Latest news and updates from Knot Poet",
+        itemListElement: news.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "Article",
+            headline: item.title,
+            description: item.excerpt,
+            datePublished: item.date,
+            author: {
+              "@type": "MusicGroup",
+              name: "Knot Poet",
+            },
+            url: `https://knotpoet.com/news/${item.slug}`,
           },
-          url: `https://knotpoet.com/news/${item.slug}`,
-        },
-      })),
-    }
-
-    this.seoService.addStructuredData(newsListStructuredData)
+        })),
+      }
+      this.seoService.addStructuredData(newsListStructuredData)
+    });
   }
 
   goToDetail(newsItem: any) {

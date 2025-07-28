@@ -10,6 +10,7 @@ const firebaseConfig = {
 };
 
 export const environment = {
-  production: true,
-  FIREBASE_CONFIG: firebaseConfig
+  production: false,
+  FIREBASE_CONFIG: firebaseConfig,
+  apiBaseUrl: '127.0.0.1:5001/functions'
 };

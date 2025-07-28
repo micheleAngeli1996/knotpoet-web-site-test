@@ -10,6 +10,7 @@ const firebaseConfig = {
 };
 
 export const environment = {
-  production: false,
-  FIREBASE_CONFIG: firebaseConfig
+  production: true,
+  FIREBASE_CONFIG: firebaseConfig,
+  apiBaseUrl: 'https://knotpoet.com/api'
 };

@@ -1,4 +1,5 @@
-import { inject, Injectable } from "@angular/core"
+import { isPlatformBrowser } from "@angular/common"
+import { inject, Injectable, PLATFORM_ID } from "@angular/core"
 import { Title, Meta } from "@angular/platform-browser"
 
 export interface SeoData {
@@ -17,6 +18,7 @@ export interface SeoData {
   providedIn: "root",
 })
 export class SeoService {
+  private platformId = inject(PLATFORM_ID);
   private titleService = inject(Title);
   private metaService = inject(Meta);
 
@@ -60,6 +62,8 @@ export class SeoService {
   }
 
   addStructuredData(data: any): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const script = document.createElement("script");
     script.type = "application/ld+json";
     script.text = JSON.stringify(data);
@@ -67,6 +71,8 @@ export class SeoService {
   }
 
   removeStructuredData(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const scripts = document.querySelectorAll('script[type="application/ld+json"]');
     scripts.forEach((script) => script.remove());
   }

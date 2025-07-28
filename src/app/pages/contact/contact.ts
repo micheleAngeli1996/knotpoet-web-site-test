@@ -2,8 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SeoService } from '../../services/seo.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from '../../services/message.service';
+import { MailService } from '../../services/mail.service';
 
 @Component({
   selector: 'app-contact',
@@ -27,12 +27,12 @@ import { MessageService } from '../../services/message.service';
                 </div>
               </div>
               <div>
-                <label htmlFor="email" class="block text-white/70 text-sm mb-2">
+                <label htmlFor="replyto" class="block text-white/70 text-sm mb-2">
                   Email*
                 </label>
                 <input
-                  formControlName="email"
-                  id="email"
+                  formControlName="replyto"
+                  id="replyto"
                   type="email"
                   class="w-full text-white bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease 
                   invalid:border-red-500 focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" 
@@ -86,22 +86,20 @@ export class Contact implements OnInit {
 
   private fb: FormBuilder = inject(FormBuilder);
   private seoService = inject(SeoService);
-  private http = inject(HttpClient);
   private messageService = inject(MessageService);
+  private mailService = inject(MailService);
 
   constructor(
   ) {
     this.contactForm = this.fb.group({
       name: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
+      replyto: ["", [Validators.required, Validators.email]],
       subject: ["", Validators.required],
       message: ["", Validators.required],
     })
   }
 
   ngOnInit(): void {
-    this.messageService.show({ type: 'info', text: 'Your message has been sent' });
-    
     this.seoService.updateSeoData({
       title: "Contact Knot Poet - Get in Touch",
       description:
@@ -136,25 +134,7 @@ export class Contact implements OnInit {
 
   onSubmit() {
     if (this.contactForm.valid) {
-      const emailToReplay = this.contactForm!.get('emailToReplay')!.value;
-      const name = this.contactForm!.get('name')!.value;
-      const message = this.contactForm!.get('message')!.value;
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      this.http.post('https://formspree.io/f/xqabydzl',
-        { name, replyto: emailToReplay, message }, { 'headers': headers }).subscribe(
-          {
-            next: response => {
-              console.log(response);
-              this.contactForm.reset();
-            },
-            error: error => {
-              this.messageService.show({ type: 'error', text: 'An error occurred while sending the message' });
-            },
-            complete: () => {
-              this.messageService.show({ type: 'success', text: 'Your message has been sent' });
-            }
-          }
-        );
+      this.mailService.sendMail(this.contactForm);
     } else {
       this.messageService.show({ type: 'error', text: 'Please fill all the fields' });
     }

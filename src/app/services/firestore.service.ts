@@ -3,7 +3,7 @@ import {collection, collectionData, docData, Firestore} from '@angular/fire/fire
 import {Observable} from 'rxjs';
 import {DocumentData} from '@angular/fire/compat/firestore';
 import {WithFieldValue, FirestoreDataConverter} from 'firebase/firestore';
-import { doc, getDoc } from "firebase/firestore";
+import {doc} from "firebase/firestore";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class FirestoreService {
 
   getDocById<T extends WithFieldValue<DocumentData>>(collectionName: string, id: string) {
     const ref = doc(this.firestore, collectionName, id).withConverter(this.createConverter<T>());
-    return docData<T>(ref, { idField: 'id' }); // restituisce un Observable
+    return docData<T>(ref, {idField: 'id'});
   }
 
   createConverter<T>(): FirestoreDataConverter<T> {

@@ -1,11 +1,10 @@
-export type News = {
-  id?: string,
-  date: string,
-} & {
-  [lang: string]: {
-    title: string,
-    shortContent: string,
-    longContent: string,
-    image?: string
-  }
+export interface NewsItem {
+  slug: string
+  date: string
+  title: string
+  excerpt: string
+  content: string
+  image?: string
+  imageAlt?: string
+  keywords?: string[]
 }
