@@ -1,9 +1,9 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {BandMember, BandMembersService} from '../../services/band-members.service';
-import {SeoService} from '../../services/seo.service';
-import {Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {AsyncPipe, NgOptimizedImage} from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { BandMember, BandMembersService } from '../../services/band-members.service';
+import { SeoService } from '../../services/seo.service';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-about',
@@ -145,9 +145,10 @@ import {AsyncPipe, NgOptimizedImage} from '@angular/common';
             </div>
             <div class="relative">
               <img
-                src="/placeholder.svg?height=400&width=600"
+                ngSrc="img/about/live_performance.png"
                 alt="Live performance with cosmic stage lighting and ethereal atmosphere"
-                class="w-full h-80 object-cover rounded-lg"
+                class="w-full h-80 object-cover object-bottom rounded-lg"
+                height="1024" width="1024"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-lg"></div>
             </div>
@@ -159,7 +160,7 @@ import {AsyncPipe, NgOptimizedImage} from '@angular/common';
           <div class="bg-white/5 backdrop-blur-sm rounded-lg p-8">
             <div class="mb-4">
               <img
-                src="/placeholder.svg?height=200&width=400"
+                src="img/about/music_philosophy.png"
                 alt="Abstract representation of musical philosophy with cosmic elements"
                 class="w-full h-32 object-cover rounded-lg mb-4"
               />
@@ -175,9 +176,9 @@ import {AsyncPipe, NgOptimizedImage} from '@angular/common';
           <div class="bg-white/5 backdrop-blur-sm rounded-lg p-8">
             <div class="mb-4">
               <img
-                src="/placeholder.svg?height=200&width=400"
+                src="img/about/artistic_vision.png"
                 alt="Artistic vision represented through cosmic imagery and sound waves"
-                class="w-full h-32 object-cover rounded-lg mb-4"
+                class="w-full h-32 object-cover object-top rounded-lg mb-4"
               />
             </div>
             <h3 class="text-xl font-light text-white/90 mb-4">Artistic Vision</h3>

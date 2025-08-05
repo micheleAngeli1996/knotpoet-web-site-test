@@ -1,10 +1,10 @@
-import {Component, type OnInit, type OnDestroy, inject} from "@angular/core"
-import {ActivatedRoute, Router, RouterModule} from "@angular/router"
-import {NewsService} from "../../services/news.service"
-import {SeoService} from "../../services/seo.service"
-import {AsyncPipe, DatePipe} from "@angular/common"
-import {NewsItem} from '../../models/News';
-import {Observable} from 'rxjs';
+import { Component, type OnInit, type OnDestroy, inject } from "@angular/core"
+import { ActivatedRoute, Router, RouterModule } from "@angular/router"
+import { NewsService } from "../../services/news.service"
+import { SeoService } from "../../services/seo.service"
+import { AsyncPipe, DatePipe, NgOptimizedImage } from "@angular/common"
+import { NewsItem } from '../../models/News';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: "app-news-detail",
@@ -24,13 +24,11 @@ import {Observable} from 'rxjs';
           </a>
 
           <article class="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden">
-            @if (article.image) {
-              <div class="relative h-64 md:h-96">
-                <img [src]="article.image" [alt]="article.imageAlt"
-                     class="w-full h-full object-cover object-center"/>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-              </div>
-            }
+            <div class="relative h-64 md:h-96">
+              <img src="{{article.image || 'img/news/news_placeholder.png'}}" [alt]="article.imageAlt"
+                    class="w-full h-full object-cover object-center"/>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            </div>
 
             <div class="p-8">
               <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
