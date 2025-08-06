@@ -3,12 +3,14 @@ import { ActivatedRoute, Router, RouterModule } from "@angular/router"
 
 import { SeoService } from "../../services/seo.service"
 import { BandMember, BandMembersService } from "../../services/band-members.service"
+import { Observable } from "rxjs";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
   selector: "app-band-member-detail",
-  imports: [RouterModule],
+  imports: [RouterModule, AsyncPipe],
   template: `
-  @if(member) {
+  @if(member$ | async; as member) {
     <div class="container mx-auto px-4 py-20">
       <div class="max-w-4xl mx-auto">
         <a
@@ -69,8 +71,8 @@ import { BandMember, BandMembersService } from "../../services/band-members.serv
                   <div>
                     <span class="text-white/50 text-sm">Role:</span>
                     <p class="flex items-center">
-                      <span class="mr-2">{{ member.roleIcon }}</span>
                       {{ member.role }}
+                      <span class="ml-2"><img width="24" [src]="member.roleIcon" alt="Member role icon"></span>
                     </p>
                   </div>
                 </div>
@@ -177,50 +179,52 @@ import { BandMember, BandMembersService } from "../../services/band-members.serv
   `,
 })
 export class BandMemberDetailComponent implements OnInit, OnDestroy {
-  member: BandMember | undefined
+  member$ = new Observable<BandMember | undefined>();
   private route = inject(ActivatedRoute)
   private router = inject(Router)
   private bandMembersService = inject(BandMembersService);
   private seoService = inject(SeoService);
 
   ngOnInit(): void {
-    const memberId = this.route.snapshot.paramMap.get("id")
+    const memberId = this.route.snapshot.paramMap.get("id");
     if (memberId) {
-      this.member = this.bandMembersService.getMemberById(memberId)
+      this.member$ = this.bandMembersService.getMember(memberId);
 
-      if (this.member) {
-        this.seoService.updateSeoData({
-          title: `${this.member.name} - ${this.member.role} | Knot Poet`,
-          description: this.member.shortDescription,
-          keywords: `${this.member.name}, ${this.member.role}, knot poet, dreaming metal, band member`,
-          image: this.member.image,
-          url: `https://knotpoet.com/band/${this.member.id}`,
-          type: "profile",
-          author: "Knot Poet",
-        })
-
-        // Add structured data for the band member
-        this.seoService.addStructuredData({
-          "@context": "https://schema.org",
-          "@type": "Person",
-          name: this.member.name,
-          jobTitle: this.member.role,
-          description: this.member.shortDescription,
-          image: this.member.image,
-          birthPlace: this.member.birthPlace,
-          memberOf: {
-            "@type": "MusicGroup",
-            name: "Knot Poet",
-            url: "https://knotpoet.com",
-          },
-          sameAs: this.member.socialMedia?.instagram
-            ? [`https://instagram.com/${this.member.socialMedia.instagram.replace("@", "")}`]
-            : [],
-        })
-      } else {
-        // Member not found, redirect to about page
-        this.router.navigate(["/about"])
-      }
+      this.member$.subscribe(member => {
+        if (member) {
+          this.seoService.updateSeoData({
+            title: `${member.name} - ${member.role} | Knot Poet`,
+            description: member.shortDescription,
+            keywords: `${member.name}, ${member.role}, knot poet, dreaming metal, band member`,
+            image: member.image,
+            url: `https://knotpoet.com/band/${member.id}`,
+            type: "profile",
+            author: "Knot Poet",
+          })
+  
+          // Add structured data for the band member
+          this.seoService.addStructuredData({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: member.name,
+            jobTitle: member.role,
+            description: member.shortDescription,
+            image: member.image,
+            birthPlace: member.birthPlace,
+            memberOf: {
+              "@type": "MusicGroup",
+              name: "Knot Poet",
+              url: "https://knotpoet.com",
+            },
+            sameAs: member.socialMedia?.instagram
+              ? [`https://instagram.com/${member.socialMedia.instagram.replace("@", "")}`]
+              : [],
+          })
+        } else {
+          // Member not found, redirect to about page
+          this.router.navigate(["/about"])
+        }
+      });
     }
   }
 

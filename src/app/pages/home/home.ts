@@ -1,15 +1,15 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {BandMember, BandMembersService} from '../../services/band-members.service';
-import {NewsService} from '../../services/news.service';
-import {SeoService} from '../../services/seo.service';
-import {map, Observable} from 'rxjs';
-import {NewsItem} from '../../models/News';
-import {RouterModule} from '@angular/router';
-import {AsyncPipe, NgOptimizedImage} from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { BandMember, BandMembersService } from '../../services/band-members.service';
+import { NewsService } from '../../services/news.service';
+import { SeoService } from '../../services/seo.service';
+import { map, Observable } from 'rxjs';
+import { NewsItem } from '../../models/News';
+import { RouterModule } from '@angular/router';
+import { AsyncPipe, DatePipe, NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterModule, AsyncPipe, NgOptimizedImage],
+  imports: [RouterModule, AsyncPipe, NgOptimizedImage, DatePipe],
   template: `
     <section class="flex items-center justify-center min-h-screen px-4 relative">
       <div class="text-center">
@@ -73,7 +73,7 @@ import {AsyncPipe, NgOptimizedImage} from '@angular/common';
           @for (article of latestNews$ | async; track $index) {
             <article
               class="bg-white/5 backdrop-blur-sm rounded-lg overflow-hidden hover:bg-white/10 transition-all duration-300 cursor-pointer group"
-              (click)="navigateToNews(article.id)"
+              [routerLink]="'/news/'+ article.id"
             >
               <div class="relative h-48 overflow-hidden">
                 <img
@@ -83,7 +83,7 @@ import {AsyncPipe, NgOptimizedImage} from '@angular/common';
                   fill/>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div class="absolute bottom-4 left-4 right-4">
-                  <time class="text-white/60 text-sm">{{ formatDate(article.date) }}</time>
+                  <time class="text-white/60 text-sm">{{ article.date | date:'mediumDate' }}</time>
                 </div>
               </div>
               <div class="p-6">
@@ -125,7 +125,7 @@ import {AsyncPipe, NgOptimizedImage} from '@angular/common';
           @for (member of bandMembers$ | async; track $index) {
             <div
               class="bg-white/5 backdrop-blur-sm rounded-lg p-6 text-center hover:bg-white/10 transition-all duration-300 cursor-pointer group"
-              (click)="navigateToMember(member.id)"
+              [routerLink]="'/band/' + member.id"
             >
               <div class="relative mb-4">
                 <img
@@ -427,22 +427,5 @@ export class Home implements OnInit {
         ],
       })
     });
-  }
-
-  formatDate(dateString: string): string {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
-  }
-
-  navigateToNews(id: string): void {
-    window.location.href = `/news/${id}`
-  }
-
-  navigateToMember(memberId: string): void {
-    window.location.href = `/band/${memberId}`
   }
 }

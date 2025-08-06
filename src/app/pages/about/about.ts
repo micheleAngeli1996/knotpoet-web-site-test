@@ -1,15 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { BandMember, BandMembersService } from '../../services/band-members.service';
 import { SeoService } from '../../services/seo.service';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { RouterModule } from '@angular/router';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-about',
   imports: [
     NgOptimizedImage,
-    AsyncPipe
+    AsyncPipe,
+    RouterModule
   ],
   template: `
     <div class="container mx-auto px-4 py-20">
@@ -65,14 +66,14 @@ import { AsyncPipe, NgOptimizedImage } from '@angular/common';
             @for (member of bandMembers$ | async; track member.id) {
               <div
                 class="max-w-[350px] bg-white/5 backdrop-blur-sm rounded-lg p-6 hover:bg-white/10 transition-colors cursor-pointer"
-                (click)="navigateToMember(member.id)"
+                [routerLink]="'/band/' + member.id"
               >
                 <div class="mb-4 mask-[url(/img/wallpapers/nebulosa-mask2.png)] mask-size-[109%110%]">
                   <img
                     [src]="member.image"
                     [alt]="member.imageAlt"
                     class="w-full h-48 object-cover
-                    {{member.id === 'fede' ? 'object-center': 'object-top'}} rounded-lg mb-4"
+                    {{member.idName === 'fede' ? 'object-center': 'object-top'}} rounded-lg mb-4"
                   />
                 </div>
                 <div class="flex items-center mb-3">
@@ -197,12 +198,13 @@ import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 export class About implements OnInit {
   private seoService = inject(SeoService);
   private bandMembersService = inject(BandMembersService);
-  private router = inject(Router);
 
   bandMembers$ = new Observable<BandMember[]>();
+  onDestroy$ = new Subject();
 
   ngOnInit(): void {
-    this.bandMembers$ = this.bandMembersService.getAllMembers()
+    this.bandMembers$ = this.bandMembersService.getAllMembers();
+    this.bandMembers$.subscribe(console.log);
 
     this.seoService.updateSeoData({
       title: "About Knot Poet - The Story Behind Dreaming Metal",
@@ -215,7 +217,7 @@ export class About implements OnInit {
       type: "website",
       author: "Knot Poet",
     })
-    this.bandMembers$.subscribe(members => {
+    this.bandMembers$.pipe(takeUntil(this.onDestroy$.asObservable())).subscribe(members => {
       // Add structured data for the about page
       this.seoService.addStructuredData({
         "@context": "https://schema.org",
@@ -240,9 +242,5 @@ export class About implements OnInit {
         },
       });
     });
-  }
-
-  navigateToMember(memberId: string): void {
-    this.router.navigate(['/band', memberId]);
   }
 }

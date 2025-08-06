@@ -83,7 +83,6 @@ export class NewsDetailComponent implements OnInit, OnDestroy {
       this.article$ = this.newsService.getNewsById(id);
 
       this.article$.subscribe(article => {
-
         if (article) {
           this.seoService.updateSeoData({
             title: `${article.title} - Knot Poet News`,

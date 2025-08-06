@@ -1,6 +1,6 @@
 // galaxy.component.ts
-import {isPlatformBrowser} from '@angular/common';
-import {AfterViewInit, Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild, OnDestroy} from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild, OnDestroy } from '@angular/core';
 import * as THREE from 'three';
 
 @Component({
@@ -41,7 +41,7 @@ export class Galaxy implements AfterViewInit, OnDestroy {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
   }
 
-  @ViewChild('canvasContainer', {static: true}) canvasRef!: ElementRef;
+  @ViewChild('canvasContainer', { static: true }) canvasRef!: ElementRef;
 
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -51,13 +51,16 @@ export class Galaxy implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.shootingStarTimer) {
-      clearTimeout(this.shootingStarTimer);
+    if (isPlatformBrowser(this.platformId)) {
+
+      if (this.shootingStarTimer) {
+        clearTimeout(this.shootingStarTimer);
+      }
+      if (this.animationId) {
+        cancelAnimationFrame(this.animationId);
+      }
+      document.removeEventListener('visibilitychange', this.handleVisibilityChange);
     }
-    if (this.animationId) {
-      cancelAnimationFrame(this.animationId);
-    }
-    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   private setupVisibilityListeners(): void {
@@ -86,7 +89,7 @@ export class Galaxy implements AfterViewInit, OnDestroy {
     const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
     camera.position.z = 100;
 
-    const renderer = new THREE.WebGLRenderer({alpha: true});
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
 
@@ -104,8 +107,8 @@ export class Galaxy implements AfterViewInit, OnDestroy {
 
     // Layer 1: Stelle lontane (sfondo)
     const createStarLayer = (count: number, spread: number, minZ: number, maxZ: number,
-                             minSize: number, maxSize: number, opacity: number,
-                             color: number, parallaxFactor: number) => {
+      minSize: number, maxSize: number, opacity: number,
+      color: number, parallaxFactor: number) => {
       const geometry = new THREE.BufferGeometry();
       const positions = [];
       const sizes = [];
@@ -309,7 +312,7 @@ export class Galaxy implements AfterViewInit, OnDestroy {
     scene.add(nebula3);
 
     // Mouse tracking
-    const mouse = {x: 0, y: 0};
+    const mouse = { x: 0, y: 0 };
     document.addEventListener('mousemove', (e) => {
       mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
       mouse.y = (e.clientY / window.innerHeight - 0.5) * 2;
